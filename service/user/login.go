@@ -71,7 +71,6 @@ func Login(email string, pwd string) (string, error) {
 	// 生成 auth token
 	var payload = Token.TokenPayload{
 		Id:      userInfo.ID,
-		Role:    userInfo.Role,
 		Email:   userInfo.Email,
 		Expired: util.GetExpiredTime(),
 	}

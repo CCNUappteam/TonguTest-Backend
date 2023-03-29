@@ -31,14 +31,12 @@ func getJwtKey() string {
 type TokenPayload struct {
 	Id      uint          `json:"id"`
 	Email   string        `json:"email"`
-	Role    uint32        `json:"role"`
 	Expired time.Duration `json:"expired"` // 有效时间（nanosecond）
 }
 
 // TokenResolve means returned payload when resolves token.
 type TokenResolve struct {
 	Id        uint   `json:"id"`
-	Role      uint32 `json:"role"`
 	Email     string `json:"email"`
 	ExpiresAt int64  `json:"expires_at"` // 过期时间（时间戳，10位）
 }
@@ -46,7 +44,6 @@ type TokenResolve struct {
 // GenerateToken generates token.
 func (payload *TokenPayload) GenerateToken() (string, error) {
 	claims := &TokenClaims{
-		Role:      payload.Role,
 		Id:        payload.Id,
 		Email:     payload.Email,
 		ExpiresAt: time.Now().Unix() + int64(payload.Expired.Seconds()),
@@ -85,7 +82,6 @@ func ResolveToken(tokenStr string) (*TokenResolve, error) {
 	t := TokenResolve{
 		Id:        claims.Id,
 		Email:     claims.Email,
-		Role:      claims.Role,
 		ExpiresAt: claims.ExpiresAt,
 	}
 	fmt.Println("token resolve", t)

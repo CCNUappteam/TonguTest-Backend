@@ -35,7 +35,7 @@ func main() {
 	pflag.Parse()
 
 	// init config
-	if err := config.Init(*cfg, "fresh"); err != nil {
+	if err := config.Init(*cfg, ""); err != nil {
 		panic(err)
 	}
 

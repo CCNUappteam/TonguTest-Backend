@@ -7,8 +7,6 @@ import (
 	"tongue/handler"
 	"tongue/handler/auth"
 	"tongue/handler/sd"
-	"tongue/handler/user"
-	"tongue/pkg/constvar"
 	"tongue/pkg/errno"
 	"tongue/router/middleware"
 )
@@ -29,7 +27,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	// swagger API doc
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	normalRequired := middleware.AuthMiddleware(constvar.AuthLevelNormal)
+	//normalRequired := middleware.AuthMiddleware(constvar.AuthLevelNormal)
 	//adminRequired := middleware.AuthMiddleware(constvar.AuthLevelAdmin)
 	//superAdminRequired := middleware.AuthMiddleware(constvar.AuthLevelSuperAdmin)
 
@@ -41,25 +39,25 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	}
 
 	// user 模块
-	userRouter := g.Group("api/v1/user")
-	{
-		userRouter.POST("/login", user.Login)
-
-		userRouter.PUT("/password", normalRequired, user.ChangePassword)
-
-		userRouter.PUT("", normalRequired, user.UpdateInfo)
-
-		userRouter.GET("/info", normalRequired, user.GetInfo)
-
-		userRouter.GET("/profile/:email", user.GetProfile)
-
-		// userRouter.GET("/list", user.List)
-
-		userRouter.GET("/qiniu_token", user.GetQiniuToken)
-
-		userRouter.PUT("/role", normalRequired, user.SetRole)
-
-	}
+	//userRouter := g.Group("api/v1/user")
+	//{
+	//	userRouter.POST("/login", user.Login)
+	//
+	//	userRouter.PUT("/password", normalRequired, user.ChangePassword)
+	//
+	//	userRouter.PUT("", normalRequired, user.UpdateInfo)
+	//
+	//	userRouter.GET("/info", normalRequired, user.GetInfo)
+	//
+	//	userRouter.GET("/profile/:email", user.GetProfile)
+	//
+	//	// userRouter.GET("/list", user.List)
+	//
+	//	userRouter.GET("/qiniu_token", user.GetQiniuToken)
+	//
+	//	userRouter.PUT("/role", normalRequired, user.SetRole)
+	//
+	//}
 
 	// The health check Handlers
 	svcd := g.Group("/sd")

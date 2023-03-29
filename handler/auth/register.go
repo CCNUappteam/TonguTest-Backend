@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"tongue/handler"
@@ -27,13 +26,14 @@ func VerificationCode(c *gin.Context) {
 		handler.SendBadRequest(c, errno.ErrBind, nil, err.Error(), handler.GetLine())
 		return
 	}
-	_, err := service.GetInfo(req.Email)
-	if err == nil {
-		handler.SendError(c, errors.New("用户已注册"), nil, err.Error(), handler.GetLine())
+	code, err := service.VerificationCode(req.Email)
+	if err != nil {
+		handler.SendBadRequest(c, errno.ErrRegister, nil, err.Error(), handler.GetLine())
 		return
-	} else {
-		
 	}
+	handler.SendResponse(c, nil, gin.H{
+		"VerificationCode": code,
+	})
 }
 
 // @Summary Register
@@ -56,15 +56,9 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	err := service.Register(req.StudentId, req.Email, req.Name, req.Password)
+	err := service.Register(req.Email, req.Name, req.Password, req.Code)
 
 	if err != nil {
-		handler.SendBadRequest(c, errno.ErrDatabase, nil, err.Error(), handler.GetLine())
-		return
-	}
-
-	// 注册成功自动生成进度表
-	if err := service.Create(req.Email, req.Name); err != nil {
 		handler.SendBadRequest(c, errno.ErrDatabase, nil, err.Error(), handler.GetLine())
 		return
 	}

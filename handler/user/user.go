@@ -16,7 +16,8 @@ type RegisterRequest struct {
 	Password string `json:"password" form:"password" binding:"required"`
 	Name     string `json:"name" form:"name" binding:"required"`
 	Gender   string `json:"gender" form:"gender" binding:"required"`
-	Age      string `json:"age" form:"age" binding:"age"`
+	Age      string `json:"age" form:"age" binding:"required"`
+	Code     string `json:"code" form:"age" binding:"required"`
 }
 
 // loginRequest Login 请求

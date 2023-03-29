@@ -23,7 +23,13 @@ var (
 	ErrLocalAccessToken  = &Errno{Code: 10103, Message: "Error occurred while getting oauth access token from local"}
 	ErrGetUserInfo       = &Errno{Code: 10104, Message: "Error occurred while getting user info from oauth-server by access token"}
 	ErrFormToken         = &Errno{Code: 10105, Message: "Error occurred while forming the token"}
+	ErrVerificationCode  = &Errno{Code: 10106, Message: "Error occurred while generating the verification code"}
 
+	// email
+	ErrEmailSend   = &Errno{Code: 10201, Message: "Error occurred while sending email"}
+	ErrValidation  = &Errno{Code: 10202, Message: "Error occurred while verifying code"}
+	ErrWrongData   = &Errno{Code: 10203, Message: "Error Data"}
+	ErrServerWrong = &Errno{Code: 10204, Message: "Server Error Occurred"}
 	// ---------------------------------------------------------------------------
 
 	ErrBadRequest       = &Errno{Code: 20001, Message: "Request error"}

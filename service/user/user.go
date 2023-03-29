@@ -2,7 +2,7 @@ package service
 
 import (
 	"github.com/qiniu/api.v7/v7/auth/qbox"
-	"github.com/qiniu/api.v7/v7/storage"
+	S "github.com/qiniu/api.v7/v7/storage"
 	"github.com/spf13/viper"
 )
 
@@ -13,7 +13,7 @@ var (
 func GetToken() string {
 	var maxInt uint64 = 1 << 32
 	initOSS()
-	putPolicy := storage.PutPolicy{
+	putPolicy := S.PutPolicy{
 		Scope:   bucketName,
 		Expires: maxInt,
 	}
