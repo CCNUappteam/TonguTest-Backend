@@ -18,17 +18,13 @@ type UserAuth struct {
 
 // AuthMiddleware ... 认证中间件
 // limit 为限制的权限等级 //以下为对权限等级的限制
-func AuthMiddleware(limit uint32) gin.HandlerFunc {
+func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Parse the json web token.
 		ctx, err := auth.ParseRequest(c)
 
 		if err != nil {
 			handler.SendResponse(c, errno.ErrAuthToken, err.Error())
-			c.Abort()
-			return
-		} else if ctx.Role < limit {
-			handler.SendResponse(c, errno.ErrPermissionDenied, "")
 			c.Abort()
 			return
 		}

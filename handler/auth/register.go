@@ -56,7 +56,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	err := service.Register(req.Email, req.Name, req.Password, req.Code)
+	err := service.Register(req.Email, req.Name, req.Password, req.Age, req.Gender, req.Code)
 
 	if err != nil {
 		handler.SendBadRequest(c, errno.ErrDatabase, nil, err.Error(), handler.GetLine())

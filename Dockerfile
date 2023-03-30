@@ -1,4 +1,4 @@
-FROM golang:1.16
+FROM golang:1.20
 RUN mkdir /app
 ADD . /app
 RUN go env -w GOPROXY="https://goproxy.cn,direct"

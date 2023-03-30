@@ -17,7 +17,7 @@ type RegisterRequest struct {
 	Name     string `json:"name" form:"name" binding:"required"`
 	Gender   string `json:"gender" form:"gender" binding:"required"`
 	Age      string `json:"age" form:"age" binding:"required"`
-	Code     string `json:"code" form:"age" binding:"required"`
+	Code     string `json:"code" form:"code" binding:"required"`
 }
 
 // loginRequest Login 请求
@@ -69,20 +69,11 @@ type listRequest struct {
 } // @name listRequest
 
 type User struct {
-	Id          uint   `json:"id"`
-	StudentID   string `json:"student_id"`
-	Name        string `json:"name"`
-	Email       string `json:"email"`
-	Avatar      string `json:"avatar"`
-	Role        uint32 `json:"role"`
-	College     string `json:"college" `
-	Major       string `json:"major" `
-	Grade       string `json:"grade"`
-	Gender      string `json:"gender" `
-	PhoneNumber string `json:"phone_number"`
-	QqNumber    string `json:"qq_number"`
-	//ContactWay    string `json:"contact_way" `
-	//ContactNumber string `json:"contact_number"`
+	Id     uint   `json:"id"`
+	Name   string `json:"name"`
+	Email  string `json:"email"`
+	Avatar string `json:"avatar"`
+	Gender string `json:"gender" `
 } // @name user
 
 // listResponse 获取 userList 响应
@@ -93,9 +84,7 @@ type listResponse struct {
 
 // updateInfoRequest 更新 userInfo 请求
 type updateInfoRequest struct {
-	Name      string `json:"name"`
-	AvatarURL string `json:"avatar_url"`
-	Email     string `json:"email"`
+	Name string `json:"name"`
 } // @name updateInfoRequest
 
 // updateTeamGroupRequest
@@ -125,4 +114,9 @@ type ModifyRoleRequest struct {
 type updatePassword struct {
 	OriginalPassword string `json:"original_password"`
 	NewPassword      string `json:"new_password"`
+}
+
+// updateEmail 修改邮箱
+type updateEmail struct {
+	Email string `json:"email"`
 }

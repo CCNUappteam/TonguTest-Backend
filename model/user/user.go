@@ -96,9 +96,8 @@ func IfExist(email, name string) error {
 
 func UpdateInfo(email string, avatar string, name string) error {
 	var user = UserModel{
-		Email:  email,
-		Avatar: avatar,
-		Name:   name,
+		Email: email,
+		Name:  name,
 	}
 	tx := model.DB.Self.Begin()
 	defer func() {

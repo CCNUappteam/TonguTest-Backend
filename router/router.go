@@ -6,7 +6,10 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 	"tongue/handler"
 	"tongue/handler/auth"
+	"tongue/handler/forum"
 	"tongue/handler/sd"
+	"tongue/handler/test"
+	"tongue/handler/user"
 	"tongue/pkg/errno"
 	"tongue/router/middleware"
 )
@@ -36,28 +39,38 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	{
 		authRouter.POST("/code", auth.VerificationCode)
 		authRouter.POST("/register", auth.Register)
+		authRouter.POST("/login", user.Login)
 	}
 
 	// user 模块
-	//userRouter := g.Group("api/v1/user")
-	//{
-	//	userRouter.POST("/login", user.Login)
-	//
-	//	userRouter.PUT("/password", normalRequired, user.ChangePassword)
-	//
-	//	userRouter.PUT("", normalRequired, user.UpdateInfo)
-	//
-	//	userRouter.GET("/info", normalRequired, user.GetInfo)
-	//
-	//	userRouter.GET("/profile/:email", user.GetProfile)
-	//
-	//	// userRouter.GET("/list", user.List)
-	//
-	//	userRouter.GET("/qiniu_token", user.GetQiniuToken)
-	//
-	//	userRouter.PUT("/role", normalRequired, user.SetRole)
-	//
-	//}
+	userRouter := g.Group("api/v1/user").Use(middleware.AuthMiddleware())
+	{
+		userRouter.GET("/info", user.GetInfo)
+		userRouter.POST("/avatar", user.UploadAvatar)
+		userRouter.POST("/info", user.UpdateInfo)
+	}
+
+	// forum
+	forumRouter := g.Group("api/v1/forum")
+	{
+		forumRouter.POST("/post", middleware.AuthMiddleware(), forum.PublishPost)
+		forumRouter.DELETE("/post", middleware.AuthMiddleware(), forum.DeletePost)
+		forumRouter.POST("/image", middleware.AuthMiddleware(), forum.PostImage)
+		forumRouter.GET("/posts", forum.GetPosts)
+		forumRouter.GET("/myposts", middleware.AuthMiddleware(), forum.GetMyPosts)
+		forumRouter.GET("/postimage", forum.GetImage)
+		forumRouter.POST("/comment", middleware.AuthMiddleware(), forum.PostComment)
+		forumRouter.DELETE("/comment", middleware.AuthMiddleware(), forum.DeleteComment)
+		forumRouter.GET("/comment", middleware.AuthMiddleware(), forum.GetComment)
+		forumRouter.POST("/like", middleware.AuthMiddleware(), forum.PostLike)
+		forumRouter.DELETE("/like", middleware.AuthMiddleware(), forum.DeleteLike)
+		forumRouter.GET("/like", forum.GetLikes)
+	}
+
+	testRouter := g.Group("api/v1/test").Use(middleware.AuthMiddleware())
+	{
+		testRouter.POST("/tongue", test.TongueTest)
+	}
 
 	// The health check Handlers
 	svcd := g.Group("/sd")

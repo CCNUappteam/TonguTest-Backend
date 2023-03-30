@@ -24,10 +24,9 @@ func GetInfo(c *gin.Context) {
 	}
 	var user = User{
 		Id:     info.ID,
-		Email:  info.Email,
 		Name:   info.Name,
+		Email:  info.Email,
 		Avatar: info.Avatar,
-
 		Gender: info.Gender,
 	}
 	SendResponse(c, nil, user)

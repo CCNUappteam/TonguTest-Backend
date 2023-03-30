@@ -86,23 +86,22 @@ func (i *innerStorage) clearStorage(email string) {
 	}
 }
 
-func Register(email string, name string, password string, code string) error {
-	//前端自己验证两次密码是否一致
-	//if req.Password != req.PasswordAgain {
-	//	SendBadRequest(c, errno.ErrPasswordRepetition, nil, "please Re-enter the password", GetLine())
-	//	return
-	//}
-
+func Register(email, name, password, age, gender, code string) error {
+	// 是否重复注册
 	if err := User.IfExist(email, name); err != nil {
 		return errno.ServerErr(errno.ErrUserExisted, err.Error())
 	}
 
 	user := User.UserModel{
-		Name: name,
-
-		Email: email,
+		Name:   name,
+		Email:  email,
+		Avatar: "https://cdn.jsdelivr.net/gh/Hyeonwuu/Image/user.png",
+		Age:    age,
+		Gender: gender,
 	}
-
+	if actual, exist := storage.storage[email]; !exist || code != actual {
+		return errno.ErrValidation
+	}
 	md5 := MD5.New()
 	md5.Write([]byte(password))
 	user.HashPassword = hex.EncodeToString(md5.Sum(nil))
