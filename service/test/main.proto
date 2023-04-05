@@ -1,0 +1,16 @@
+syntax = 'proto3';
+option go_package = "./test";
+package test;
+
+service Upload {
+    rpc SendImage(stream data) returns (response) {}
+}
+ 
+message data {
+    bytes image = 1;
+}
+
+message response {
+    string predict_class=1;
+    bool status=2;
+}
