@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"tongue/model"
 )
 
@@ -96,8 +96,9 @@ func IfExist(email, name string) error {
 
 func UpdateInfo(email string, avatar string, name string) error {
 	var user = UserModel{
-		Email: email,
-		Name:  name,
+		Email:  email,
+		Name:   name,
+		Avatar: avatar,
 	}
 	tx := model.DB.Self.Begin()
 	defer func() {

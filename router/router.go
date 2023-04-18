@@ -10,6 +10,7 @@ import (
 	"tongue/handler/sd"
 	"tongue/handler/test"
 	"tongue/handler/user"
+	"tongue/handler/xinbang"
 	"tongue/pkg/errno"
 	"tongue/router/middleware"
 )
@@ -48,6 +49,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		userRouter.GET("/info", user.GetInfo)
 		userRouter.POST("/avatar", user.UploadAvatar)
 		userRouter.POST("/info", user.UpdateInfo)
+		userRouter.POST("/card", user.PunchCard)
 	}
 
 	// forum
@@ -72,6 +74,10 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		testRouter.POST("/tongue", test.TongueTest)
 	}
 
+	rankRouter := g.Group("api/v1/rank")
+	{
+		rankRouter.POST("", xinbang.GetRank)
+	}
 	// The health check Handlers
 	svcd := g.Group("/sd")
 	{

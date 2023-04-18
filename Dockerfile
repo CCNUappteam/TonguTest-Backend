@@ -1,9 +1,8 @@
-FROM golang:1.20
-RUN mkdir /app
-ADD . /app
-RUN go env -w GOPROXY="https://goproxy.cn,direct"
-WORKDIR /app
-RUN make
-CMD ["./main"]
-
-
+FROM golang:alpine
+WORKDIR $GOPATH/src/tonguetest
+ADD . ./
+ENV GO111MODULE=on
+ENV GOPROXY="https://goproxy.io"
+RUN go build -o tonguetest .
+EXPOSE 8080
+ENTRYPOINT  ["./tonguetest"]

@@ -78,3 +78,18 @@ func GetPostImage(id string) ([]*PostImage, error) {
 	}
 	return images, nil
 }
+
+func DeletePost(email string, id string) error {
+	var post Post
+	if err := model.DB.Self.Model(&Post{}).Where("id = ?", id).Find(&post).Error; err != nil {
+		return err
+	}
+	if post.PublisherEmail != email {
+		return errors.New("permission denied")
+	}
+	if err := model.DB.Self.Where("id = ?", id).Delete(&post).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

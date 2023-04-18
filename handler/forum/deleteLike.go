@@ -9,7 +9,7 @@ import (
 
 func DeleteLike(c *gin.Context) {
 	email := c.MustGet("email").(string)
-	id := c.Query("likeid")
+	id := c.Query("postid")
 	if err := service.DeleteLike(email, id); err != nil {
 		handler.SendError(c, err, errno.ErrDatabase, err.Error(), handler.GetLine())
 		return
