@@ -50,6 +50,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		userRouter.POST("/avatar", user.UploadAvatar)
 		userRouter.POST("/info", user.UpdateInfo)
 		userRouter.POST("/card", user.PunchCard)
+		userRouter.GET("/card", user.GetCard)
 	}
 
 	// forum

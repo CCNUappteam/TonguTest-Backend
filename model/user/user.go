@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"gorm.io/gorm"
+	"time"
 	"tongue/model"
 )
 
@@ -17,6 +18,11 @@ type UserModel struct {
 	HashPassword string `json:"hash_password" gorm:"column:hash_password;" binding:"required"`
 	Age          string `json:"age" gorm:"column:age;" binding:"required"`
 	Gender       string `json:"gender" gorm:"column:gender;"`
+}
+
+type Card struct {
+	gorm.Model
+	Email string `gorm:"column:email"`
 }
 
 func (u *UserModel) TableName() string {
@@ -154,4 +160,51 @@ func UpdatePassword(email string, original string, new string) error {
 		return err
 	}
 	return nil
+}
+
+func PunchCard(email string) error {
+	var card Card
+
+	if err := model.DB.Self.Model(&Card{}).Where("email = ?", email).First(&card).Error; err != nil {
+		var new_card = Card{
+			Email: email,
+		}
+		if err := model.DB.Self.Model(&Card{}).Create(&new_card).Error; err != nil {
+			return err
+		} else {
+			return nil
+		}
+	}
+
+	y1, m1, d1 := card.Model.CreatedAt.Date()
+	y2, m2, d2 := time.Now().Date()
+	if y1 != y2 || m1 != m2 || d1 != d2 {
+		var new_card = Card{
+			Email: email,
+		}
+		if err := model.DB.Self.Model(&Card{}).Create(&new_card).Error; err != nil {
+			return err
+		}
+	} else {
+		errors.New("have punched card today")
+	}
+	return nil
+}
+
+func GetCard(email, year, month string) ([]*Card, error) {
+	cards := make([]*Card, 0)
+	var where string
+	switch month {
+	case "1", "3", "5", "7", "8", "10", "12":
+		where = fmt.Sprintf("email = '%v' AND created_at >= '%v-%v-01 00:00:00' AND created_at <= '%v-%v-31 23:59:59'", email, year, month, year, month)
+	case "4", "6", "9", "11":
+		where = fmt.Sprintf("email = '%v' AND created_at >= '%v-%v-01 00:00:00' AND created_at <= '%v-%v-30 23:59:59'", email, year, month, year, month)
+	default:
+		where = fmt.Sprintf("email = '%v' AND created_at >= '%v-%v-01 00:00:00' AND created_at <= '%v-%v-28 23:59:59'", email, year, month, year, month)
+
+	}
+	if err := model.DB.Self.Model(&Card{}).Where(where).Find(&cards).Error; err != nil {
+		return nil, err
+	}
+	return cards, nil
 }

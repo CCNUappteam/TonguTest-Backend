@@ -47,7 +47,7 @@ func main() {
 	model.DB.Init()
 	defer model.DB.Close()
 
-	if err := model.DB.Self.AutoMigrate(&user.UserModel{}, &forum.Post{}, &forum.PostImage{}, &forum.Comment{}, &forum.Like{}).Error; err != nil {
+	if err := model.DB.Self.AutoMigrate(&user.UserModel{}, &forum.Post{}, &forum.PostImage{}, &forum.Comment{}, &forum.Like{}, &user.Card{}).Error; err != nil {
 		fmt.Println("error", err)
 	}
 
