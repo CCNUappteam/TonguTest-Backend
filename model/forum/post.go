@@ -10,7 +10,7 @@ type Post struct {
 	gorm.Model
 	PublisherEmail string `json:"publisher_email" gorm:"column:publisher_email" binding:"required"`
 	Title          string `json:"title" gorm:"column:title" binding:"required"`
-	Content        string `json:"content" gorm:"column:content" binding:"required"`
+	Content        string `json:"content" gorm:"column:content,collate:utf8,length:2000" binding:"required"`
 	LikeNum        int    `json:"like_num" gorm:"column:like_num"`
 }
 

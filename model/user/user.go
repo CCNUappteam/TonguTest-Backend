@@ -18,6 +18,8 @@ type UserModel struct {
 	HashPassword string `json:"hash_password" gorm:"column:hash_password;" binding:"required"`
 	Age          string `json:"age" gorm:"column:age;" binding:"required"`
 	Gender       string `json:"gender" gorm:"column:gender;"`
+	Phone        string `json:"phone" gorm:"column:phone"`
+	Intro        string `json:"intro" gorm:"column:intro"`
 }
 
 type Card struct {
@@ -100,11 +102,13 @@ func IfExist(email, name string) error {
 
 }
 
-func UpdateInfo(email string, avatar string, name string) error {
+func UpdateInfo(email string, avatar string, name string, age string, phone string) error {
 	var user = UserModel{
 		Email:  email,
 		Name:   name,
 		Avatar: avatar,
+		Age:    age,
+		Phone:  phone,
 	}
 	tx := model.DB.Self.Begin()
 	defer func() {
@@ -112,7 +116,7 @@ func UpdateInfo(email string, avatar string, name string) error {
 			tx.Rollback()
 		}
 	}()
-	if err := tx.Model(user).Where("email = ?", user.Email).Update(user).Error; err != nil {
+	if err := tx.Model(user).Where("email = ?", user.Email).Update(&user).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
@@ -120,26 +124,26 @@ func UpdateInfo(email string, avatar string, name string) error {
 	return tx.Commit().Error
 }
 
-func UpdateInfor(email string, avatar string, name string, studentId string, college string, major string, grade string, gender string, phone_number string, qq_number string) error {
-	var user = UserModel{
-		Email:  email,
-		Avatar: avatar,
-		Name:   name,
-		Gender: gender,
-	}
-	tx := model.DB.Self.Begin()
-	defer func() {
-		if r := recover(); r != nil {
-			tx.Rollback()
-		}
-	}()
-	if err := tx.Model(user).Where("email = ?", user.Email).Update(user).Error; err != nil {
-		tx.Rollback()
-		return err
-	}
-
-	return tx.Commit().Error
-}
+//func UpdateInfo(email string, avatar string, name string, studentId string, college string, major string, grade string, gender string, phone_number string, qq_number string) error {
+//	var user = UserModel{
+//		Email:  email,
+//		Avatar: avatar,
+//		Name:   name,
+//		Gender: gender,
+//	}
+//	tx := model.DB.Self.Begin()
+//	defer func() {
+//		if r := recover(); r != nil {
+//			tx.Rollback()
+//		}
+//	}()
+//	if err := tx.Model(user).Where("email = ?", user.Email).Update(user).Error; err != nil {
+//		tx.Rollback()
+//		return err
+//	}
+//
+//	return tx.Commit().Error
+//}
 
 func UpdatePassword(email string, original string, new string) error {
 	md5 := Md5.New()

@@ -7,6 +7,7 @@ import (
 	"time"
 	"tongue/model"
 	"tongue/model/forum"
+	"tongue/model/record"
 	"tongue/model/user"
 
 	"github.com/gin-gonic/gin"
@@ -47,7 +48,7 @@ func main() {
 	model.DB.Init()
 	defer model.DB.Close()
 
-	if err := model.DB.Self.AutoMigrate(&user.UserModel{}, &forum.Post{}, &forum.PostImage{}, &forum.Comment{}, &forum.Like{}, &user.Card{}).Error; err != nil {
+	if err := model.DB.Self.AutoMigrate(&user.UserModel{}, &forum.Post{}, &forum.PostImage{}, &forum.Comment{}, &forum.Like{}, &user.Card{}, &record.Record{}).Error; err != nil {
 		fmt.Println("error", err)
 	}
 

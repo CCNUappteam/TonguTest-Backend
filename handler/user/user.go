@@ -1,5 +1,7 @@
 package user
 
+import "time"
+
 // VerificationRequest EmailCode 请求
 type VerificationRequest struct {
 	Email string `json:"email" form:"email" binding:"required"`
@@ -69,11 +71,14 @@ type listRequest struct {
 } // @name listRequest
 
 type User struct {
-	Id     uint   `json:"id"`
-	Name   string `json:"name"`
-	Email  string `json:"email"`
-	Avatar string `json:"avatar"`
-	Gender string `json:"gender" `
+	CreateAt time.Time `json:"create_at"`
+	Id       uint      `json:"id"`
+	Name     string    `json:"name"`
+	Email    string    `json:"email"`
+	Avatar   string    `json:"avatar"`
+	Age      string    `json:"age"`
+	Gender   string    `json:"gender" `
+	Phone    string    `json:"phone"`
 } // @name user
 
 // listResponse 获取 userList 响应
@@ -84,7 +89,9 @@ type listResponse struct {
 
 // updateInfoRequest 更新 userInfo 请求
 type updateInfoRequest struct {
-	Name string `json:"name"`
+	Name  string `json:"name"`
+	Age   string `json:"age"`
+	Phone string `json:"phone"`
 } // @name updateInfoRequest
 
 // updateTeamGroupRequest

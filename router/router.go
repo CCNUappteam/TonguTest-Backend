@@ -47,10 +47,13 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	userRouter := g.Group("api/v1/user").Use(middleware.AuthMiddleware())
 	{
 		userRouter.GET("/info", user.GetInfo)
+		userRouter.GET("/otherinfo", user.GetOtherInfo)
 		userRouter.POST("/avatar", user.UploadAvatar)
 		userRouter.POST("/info", user.UpdateInfo)
 		userRouter.POST("/card", user.PunchCard)
 		userRouter.GET("/card", user.GetCard)
+		userRouter.POST("/record", user.PostRecord)
+		userRouter.GET("/record", user.GetRecord)
 	}
 
 	// forum

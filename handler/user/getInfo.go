@@ -23,11 +23,33 @@ func GetInfo(c *gin.Context) {
 		return
 	}
 	var user = User{
+		CreateAt: info.CreatedAt,
+		Id:       info.ID,
+		Age:      info.Age,
+		Name:     info.Name,
+		Email:    info.Email,
+		Avatar:   info.Avatar,
+		Gender:   info.Gender,
+		Phone:    info.Phone,
+	}
+	SendResponse(c, nil, user)
+}
+
+func GetOtherInfo(c *gin.Context) {
+	email := c.Query("email")
+	info, err := U.GetInfo(email)
+	if err != nil {
+		SendError(c, err, nil, err.Error(), GetLine())
+		return
+	}
+	var user = User{
 		Id:     info.ID,
 		Name:   info.Name,
 		Email:  info.Email,
 		Avatar: info.Avatar,
 		Gender: info.Gender,
+		Age:    info.Age,
+		Phone:  info.Phone,
 	}
 	SendResponse(c, nil, user)
 }

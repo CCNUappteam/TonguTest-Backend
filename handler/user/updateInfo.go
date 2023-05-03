@@ -31,7 +31,7 @@ func UpdateInfo(c *gin.Context) {
 
 	email := c.MustGet("email").(string)
 
-	if err := service.UpdateInfo(email, "", req.Name); err != nil {
+	if err := service.UpdateInfo(email, "", req.Name, req.Age, req.Phone); err != nil {
 		SendError(c, errno.ErrDatabase, nil, err.Error(), GetLine())
 		return
 	}
